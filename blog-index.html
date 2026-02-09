@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Seu blog profissional sobre AI, Produtividade e Inovação Digital. Artigos semanais com estratégias práticas.">
+    <meta name="keywords" content="AI, produtividade, automação, tecnologia, inovação digital">
+    <meta property="og:title" content="BlogPro - AI & Produtividade">
+    <meta property="og:description" content="Estratégias práticas para aumentar sua produtividade com IA">
+    <meta property="og:type" content="website">
+    
+    <title>BlogPro - AI & Produtividade | Artigos Semanais</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #ec4899;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --accent: #8b5cf6;
+            --text-dark: #111827;
+            --text-light: #6b7280;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background: var(--light);
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f3f4f6;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 150px;
+            font-size: 0.9rem;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            bottom: -50px;
+            left: -50px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            animation: slideUp 0.8s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: var(--primary);
+            padding: 1rem 2.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* POSTS GRID */
+        .posts-section {
+            padding: 4rem 2rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            font-size: 1rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.5rem;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            cursor: pointer;
+        }
+
+        .post-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+
+        .post-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .post-image::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .post-content {
+            padding: 1.5rem;
+        }
+
+        .post-category {
+            display: inline-block;
+            background: #ede9fe;
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+
+        .post-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.3;
+            color: var(--text-dark);
+        }
+
+        .post-excerpt {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            border-top: 1px solid #f3f4f6;
+            padding-top: 1rem;
+        }
+
+        .post-date {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .read-time {
+            background: #f3f4f6;
+            padding: 0.3rem 0.8rem;
+            border-radius: 0.25rem;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-box {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .newsletter-box h3 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .newsletter-box p {
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.95;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 0.4rem;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .subscribe-btn {
+            width: 100%;
+            background: white;
+            color: var(--primary);
+            padding: 0.8rem;
+            border: none;
+            border-radius: 0.4rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .subscribe-btn:hover {
+            transform: scale(1.02);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 2rem;
+            text-align: center;
+            color: #9ca3af;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-box input {
+                width: 100px;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* AD SPACES */
+        .ad-space {
+            background: #f9fafb;
+            border: 2px dashed #d1d5db;
+            padding: 2rem;
+            text-align: center;
+            color: #6b7280;
+            margin: 2rem 0;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .ad-space-horizontal {
+            height: 90px;
+        }
+
+        .ad-space-vertical {
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-content">
+            <div class="logo">📱 BlogPro</div>
+            <nav>
+                <a href="#home">Home</a>
+                <a href="#blog">Blog</a>
+                <a href="#categorias">Categorias</a>
+                <a href="#sobre">Sobre</a>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Buscar...">
+                    <span>🔍</span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Domine a IA e Multiplique sua Produtividade</h1>
+            <p>Estratégias práticas, ferramentas reais e insights semanais para você não ficar para trás na revolução digital.</p>
+            <button class="cta-button" onclick="document.getElementById('newsletter').scrollIntoView({behavior: 'smooth'})">Receber Atualizações</button>
+        </div>
+    </section>
+
+    <!-- AD SPACE 1 (HORIZONTAL) -->
+    <div class="container">
+        <div class="ad-space ad-space-horizontal" id="ad-1">
+            <!-- Google AdSense horizontal aqui -->
+            <p>[Google AdSense - Anúncio 728x90]</p>
+        </div>
+    </div>
+
+    <!-- POSTS -->
+    <section class="posts-section" id="blog">
+        <div class="container">
+            <h2 class="section-title">Artigos Recentes</h2>
+            <p class="section-subtitle">Conteúdo atualizado semanalmente sobre AI, produtividade e inovação</p>
+
+            <!-- FILTROS -->
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterPosts('all')">Todos</button>
+                <button class="filter-btn" onclick="filterPosts('ia')">IA & Automação</button>
+                <button class="filter-btn" onclick="filterPosts('produtividade')">Produtividade</button>
+                <button class="filter-btn" onclick="filterPosts('ferramentas')">Ferramentas</button>
+                <button class="filter-btn" onclick="filterPosts('carreira')">Carreira</button>
+            </div>
+
+            <!-- GRID DE POSTS -->
+            <div class="posts-grid" id="postsGrid">
+                <!-- Posts serão inseridos aqui via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- AD SPACE 2 (VERTICAL - SIDEBAR) -->
+    <div class="container" style="margin-bottom: 3rem;">
+        <div style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem;">
+            <div></div>
+            <div>
+                <div class="ad-space ad-space-vertical" id="ad-2">
+                    <!-- Google AdSense vertical aqui -->
+                    <p>[Google AdSense - Anúncio 300x250]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEWSLETTER & SIDEBAR -->
+    <section style="background: #f9fafb; padding: 3rem 2rem;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+                <div>
+                    <!-- Ad space ou conteúdo adicional -->
+                </div>
+                <div id="newsletter">
+                    <div class="newsletter-box">
+                        <h3>Newsletter Semanal</h3>
+                        <p>As melhores ferramentas de IA e dicas de produtividade direto no seu email</p>
+                        <input type="email" class="email-input" placeholder="seu@email.com">
+                        <button class="subscribe-btn">Inscrever</button>
+                    </div>
+
+                    <div class="sidebar">
+                        <h3 class="sidebar-title">📌 Em Alta</h3>
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <a href="#" style="text-decoration: none; color: var(--text-dark); border-bottom: 1px solid #e5e7eb; padding-bottom: 1rem;">
+                                <strong>ChatGPT vs Claude: Qual é melhor em 2025?</strong>
+                                <p style="color: var(--text-light); font-size: 0.85rem; margin-top: 0.3rem;">Análise completa</p>
+                            </a>
+                            <a href="#" style="text-decoration: none; color: var(--text-dark); border-bottom: 1px solid #e5e7eb; padding-bottom: 1rem;">
+                                <strong>5 Automações que Vão Mudar seu Negócio</strong>
+                                <p style="color: var(--text-light); font-size: 0.85rem; margin-top: 0.3rem;">Guia prático</p>
+                            </a>
+                            <a href="#" style="text-decoration: none; color: var(--text-dark);">
+                                <strong>Make.com vs Zapier: Qual escolher?</strong>
+                                <p style="color: var(--text-light); font-size: 0.85rem; margin-top: 0.3rem;">Comparação</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AD SPACE 3 (HORIZONTAL) -->
+    <div class="container" style="margin-top: 3rem; margin-bottom: 3rem;">
+        <div class="ad-space ad-space-horizontal" id="ad-3">
+            <!-- Google AdSense horizontal aqui -->
+            <p>[Google AdSense - Anúncio 728x90]</p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>BlogPro</h4>
+                <p style="color: #d1d5db; margin-bottom: 1rem;">Seu espaço para aprender sobre IA, produtividade e tecnologia digital.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Categorias</h4>
+                <ul>
+                    <li><a href="#">IA & Automação</a></li>
+                    <li><a href="#">Produtividade</a></li>
+                    <li><a href="#">Ferramentas</a></li>
+                    <li><a href="#">Carreira Tech</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Comunidade</h4>
+                <ul>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="#">YouTube</a></li>
+                    <li><a href="#">Discord</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacidade</a></li>
+                    <li><a href="#">Termos</a></li>
+                    <li><a href="#">Cookies</a></li>
+                    <li><a href="#">Contato</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 BlogPro. Todos os direitos reservados. | Feito com ❤️ para criadores</p>
+        </div>
+    </footer>
+
+    <script>
+        // DADOS DOS POSTS (VOCÊ PODE EXPANDIR ISSO)
+        const posts = [
+            {
+                id: 1,
+                title: "ChatGPT vs Claude: Qual é melhor em 2025?",
+                excerpt: "Análise profunda comparando as duas maiores IA do mercado. Testes práticos, velocidade e qualidade.",
+                category: "ia",
+                image: "🤖",
+                date: "15 de Jan",
+                readTime: "8 min",
+                link: "#"
+            },
+            {
+                id: 2,
+                title: "Como Automizar sua Rotina em 30 Minutos",
+                excerpt: "Guia passo a passo para configurar 5 automações que vão economizar horas do seu mês.",
+                category: "produtividade",
+                image: "⚙️",
+                date: "14 de Jan",
+                readTime: "6 min",
+                link: "#"
+            },
+            {
+                id: 3,
+                title: "Noindex vs Nofollow: Tudo que você precisa saber",
+                excerpt: "Entenda a diferença e use corretamente para otimizar seu SEO. Guia completo e prático.",
+                category: "ferramentas",
+                image: "🔍",
+                date: "13 de Jan",
+                readTime: "5 min",
+                link: "#"
+            },
+            {
+                id: 4,
+                title: "5 Profissões que Vão Desaparecer com a IA",
+                excerpt: "Análise realista sobre o impacto da IA no mercado de trabalho e profissões do futuro.",
+                category: "carreira",
+                image: "💼",
+                date: "12 de Jan",
+                readTime: "7 min",
+                link: "#"
+            },
+            {
+                id: 5,
+                title: "Make.com: A Melhor Alternativa a Zapier?",
+                excerpt: "Comparação detalhada de preços, funcionalidades e qual ferramenta escolher para seu negócio.",
+                category: "ferramentas",
+                image: "⚡",
+                date: "11 de Jan",
+                readTime: "9 min",
+                link: "#"
+            },
+            {
+                id: 6,
+                title: "Prompt Engineering: Como Pedir Certo à IA",
+                excerpt: "Técnicas avançadas para conseguir respostas melhores do ChatGPT, Claude e outras IA.",
+                category: "ia",
+                image: "💡",
+                date: "10 de Jan",
+                readTime: "6 min",
+                link: "#"
+            }
+        ];
+
+        // Renderizar posts
+        function renderPosts(filterCategory = 'all') {
+            const grid = document.getElementById('postsGrid');
+            grid.innerHTML = '';
+
+            const filtered = filterCategory === 'all' 
+                ? posts 
+                : posts.filter(post => post.category === filterCategory);
+
+            filtered.forEach(post => {
+                const card = document.createElement('div');
+                card.className = 'post-card';
+                card.innerHTML = `
+                    <div class="post-image">${post.image}</div>
+                    <div class="post-content">
+                        <span class="post-category">${post.category}</span>
+                        <h3 class="post-title">${post.title}</h3>
+                        <p class="post-excerpt">${post.excerpt}</p>
+                        <div class="post-meta">
+                            <span class="post-date">📅 ${post.date}</span>
+                            <span class="read-time">📖 ${post.readTime}</span>
+                        </div>
+                    </div>
+                `;
+                card.onclick = () => window.location.href = post.link;
+                grid.appendChild(card);
+            });
+        }
+
+        // Filtrar posts
+        function filterPosts(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderPosts(category);
+        }
+
+        // Busca
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const grid = document.getElementById('postsGrid');
+            grid.innerHTML = '';
+            
+            const filtered = posts.filter(post => 
+                post.title.toLowerCase().includes(query) || 
+                post.excerpt.toLowerCase().includes(query)
+            );
+
+            filtered.forEach(post => {
+                const card = document.createElement('div');
+                card.className = 'post-card';
+                card.innerHTML = `
+                    <div class="post-image">${post.image}</div>
+                    <div class="post-content">
+                        <span class="post-category">${post.category}</span>
+                        <h3 class="post-title">${post.title}</h3>
+                        <p class="post-excerpt">${post.excerpt}</p>
+                        <div class="post-meta">
+                            <span class="post-date">📅 ${post.date}</span>
+                            <span class="read-time">📖 ${post.readTime}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        });
+
+        // Renderizar posts na carga
+        renderPosts();
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
