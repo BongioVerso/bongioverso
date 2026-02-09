@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - BlogPro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #ec4899;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 250px;
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            padding: 2rem 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            padding: 0 1.5rem;
+            margin-bottom: 2rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            color: var(--dark);
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: #ede9fe;
+            color: var(--primary);
+            border-right: 3px solid var(--primary);
+        }
+
+        /* MAIN */
+        .main {
+            margin-left: 250px;
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--dark);
+            border: 1px solid #e5e7eb;
+        }
+
+        .btn-secondary:hover {
+            background: var(--light);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        /* SECTION */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* FORM */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* TABLE */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .table th {
+            background: #f9fafb;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .table td {
+            padding: 1rem;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .table tr:hover {
+            background: #f9fafb;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-published {
+            background: #d1fae5;
+            color: var(--success);
+        }
+
+        .status-draft {
+            background: #fef3c7;
+            color: var(--warning);
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .actions button {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+            border-radius: 0.3rem;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px rgba(0,0,0,0.15);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-header h2 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        /* STATS */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: absolute;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .table {
+                font-size: 0.85rem;
+            }
+
+            .table th,
+            .table td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">📱 BlogPro Admin</div>
+            <ul class="sidebar-menu">
+                <li><a href="#dashboard" class="menu-link active" data-section="dashboard">📊 Dashboard</a></li>
+                <li><a href="#posts" class="menu-link" data-section="posts">📝 Artigos</a></li>
+                <li><a href="#novo-post" class="menu-link" data-section="novo-post">✏️ Novo Artigo</a></li>
+                <li><a href="#categorias" class="menu-link" data-section="categorias">🏷️ Categorias</a></li>
+                <li><a href="#comentarios" class="menu-link" data-section="comentarios">💬 Comentários</a></li>
+                <li><a href="#configuracoes" class="menu-link" data-section="configuracoes">⚙️ Configurações</a></li>
+            </ul>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main">
+            <!-- DASHBOARD -->
+            <section id="dashboard" class="section active">
+                <div class="header">
+                    <h1>Dashboard</h1>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-label">Total de Artigos</div>
+                        <div class="stat-value" id="totalPosts">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Publicados</div>
+                        <div class="stat-value" id="publishedPosts">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Rascunhos</div>
+                        <div class="stat-value" id="draftPosts">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Categorias</div>
+                        <div class="stat-value" id="totalCategories">5</div>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    <h2 style="font-family: 'Playfair Display', serif; margin-bottom: 1rem;">Atividade Recente</h2>
+                    <p style="color: var(--text-light);">Últimos artigos publicados e rascunhos...</p>
+                    <div id="recentActivity" style="margin-top: 1.5rem;"></div>
+                </div>
+            </section>
+
+            <!-- POSTS -->
+            <section id="posts" class="section">
+                <div class="header">
+                    <h1>Meus Artigos</h1>
+                    <button class="btn btn-primary" onclick="switchSection('novo-post')">+ Novo Artigo</button>
+                </div>
+
+                <div style="background: white; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Categoria</th>
+                                <th>Status</th>
+                                <th>Data</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="postsTable">
+                            <tr>
+                                <td colspan="5" style="text-align: center; color: var(--text-light); padding: 2rem;">Nenhum artigo criado ainda</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- NOVO POST -->
+            <section id="novo-post" class="section">
+                <div class="header">
+                    <h1>Novo Artigo</h1>
+                </div>
+
+                <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    <form id="postForm">
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+                            <div>
+                                <div class="form-group">
+                                    <label>Título do Artigo</label>
+                                    <input type="text" id="postTitle" required placeholder="Ex: Como usar ChatGPT para ganhar dinheiro">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Conteúdo</label>
+                                    <textarea id="postContent" required placeholder="Escreva seu artigo aqui... (Markdown suportado)"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Resumo/Excerpt</label>
+                                    <textarea id="postExcerpt" placeholder="Um breve resumo para exibir na página inicial" style="min-height: 80px;"></textarea>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="form-group">
+                                    <label>Categoria</label>
+                                    <select id="postCategory" required>
+                                        <option value="">Selecione uma categoria</option>
+                                        <option value="ia">IA & Automação</option>
+                                        <option value="produtividade">Produtividade</option>
+                                        <option value="ferramentas">Ferramentas</option>
+                                        <option value="carreira">Carreira</option>
+                                        <option value="marketing">Marketing</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Emoji/Ícone</label>
+                                    <input type="text" id="postIcon" placeholder="🤖" value="🤖" maxlength="1">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Tempo de Leitura (minutos)</label>
+                                    <input type="number" id="postReadTime" value="5" min="1" max="60">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <select id="postStatus">
+                                        <option value="draft">Rascunho</option>
+                                        <option value="published" selected>Publicado</option>
+                                    </select>
+                                </div>
+
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <button type="submit" class="btn btn-primary" style="flex: 1;">Publicar</button>
+                                    <button type="reset" class="btn btn-secondary" style="flex: 1;">Limpar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- CATEGORIAS -->
+            <section id="categorias" class="section">
+                <div class="header">
+                    <h1>Categorias</h1>
+                    <button class="btn btn-primary" onclick="showAddCategoryModal()">+ Nova Categoria</button>
+                </div>
+
+                <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    <div id="categoriesList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">
+                        <!-- Categorias serão listadas aqui -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- COMENTÁRIOS -->
+            <section id="comentarios" class="section">
+                <div class="header">
+                    <h1>Comentários</h1>
+                </div>
+
+                <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-align: center; color: var(--text-light);">
+                    <p>Sistema de comentários ainda será integrado</p>
+                </div>
+            </section>
+
+            <!-- CONFIGURAÇÕES -->
+            <section id="configuracoes" class="section">
+                <div class="header">
+                    <h1>Configurações</h1>
+                </div>
+
+                <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    <div class="form-group">
+                        <label>Nome do Blog</label>
+                        <input type="text" value="BlogPro" id="blogName">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <textarea id="blogDescription">Seu blog profissional sobre IA, produtividade e inovação digital.</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email para Newsletter</label>
+                        <input type="email" id="blogEmail" placeholder="seu-email@gmail.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Google AdSense ID (opcional)</label>
+                        <input type="text" id="adsenseId" placeholder="ca-pub-xxxxxxxxxxxxxxxx">
+                    </div>
+
+                    <button class="btn btn-primary">Salvar Configurações</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- MODAL PARA EDITAR POST -->
+    <div id="editPostModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Editar Artigo</h2>
+                <button class="close-modal" onclick="closeModal('editPostModal')">&times;</button>
+            </div>
+            <form id="editPostForm">
+                <input type="hidden" id="editPostId">
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" id="editPostTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Conteúdo</label>
+                    <textarea id="editPostContent" required style="min-height: 200px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Categoria</label>
+                    <select id="editPostCategory">
+                        <option value="ia">IA & Automação</option>
+                        <option value="produtividade">Produtividade</option>
+                        <option value="ferramentas">Ferramentas</option>
+                        <option value="carreira">Carreira</option>
+                        <option value="marketing">Marketing</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="editPostStatus">
+                        <option value="draft">Rascunho</option>
+                        <option value="published">Publicado</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('editPostModal')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Atualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL PARA NOVA CATEGORIA -->
+    <div id="addCategoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nova Categoria</h2>
+                <button class="close-modal" onclick="closeModal('addCategoryModal')">&times;</button>
+            </div>
+            <form id="categoryForm">
+                <div class="form-group">
+                    <label>Nome da Categoria</label>
+                    <input type="text" id="categoryName" required placeholder="Ex: IA & Automação">
+                </div>
+                <div class="form-group">
+                    <label>Slug (URL)</label>
+                    <input type="text" id="categorySlug" required placeholder="Ex: ia-automacao">
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="categoryDescription" placeholder="Descrição da categoria"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addCategoryModal')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Criar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // DADOS (Usando localStorage)
+        const defaultPosts = [
+            {
+                id: 1,
+                title: "ChatGPT vs Claude: Qual é melhor em 2025?",
+                content: "Análise completa comparando as duas maiores IA do mercado...",
+                excerpt: "Análise profunda comparando as duas maiores IA do mercado.",
+                category: "ia",
+                icon: "🤖",
+                readTime: 8,
+                status: "published",
+                date: new Date().toLocaleDateString('pt-BR')
+            }
+        ];
+
+        let posts = JSON.parse(localStorage.getItem('blogPosts')) || defaultPosts;
+        let categories = ['ia', 'produtividade', 'ferramentas', 'carreira', 'marketing'];
+
+        // FUNCIONALIDADES
+        function switchSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+
+            if (sectionId === 'posts') renderPostsTable();
+            if (sectionId === 'categorias') renderCategories();
+            if (sectionId === 'dashboard') updateDashboard();
+        }
+
+        function updateDashboard() {
+            document.getElementById('totalPosts').textContent = posts.length;
+            document.getElementById('publishedPosts').textContent = posts.filter(p => p.status === 'published').length;
+            document.getElementById('draftPosts').textContent = posts.filter(p => p.status === 'draft').length;
+        }
+
+        function renderPostsTable() {
+            const tbody = document.getElementById('postsTable');
+            if (posts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #999; padding: 2rem;">Nenhum artigo ainda</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = posts.map(post => `
+                <tr>
+                    <td><strong>${post.title}</strong></td>
+                    <td>${post.category}</td>
+                    <td><span class="status-badge status-${post.status}">${post.status === 'published' ? 'Publicado' : 'Rascunho'}</span></td>
+                    <td>${post.date}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn btn-secondary" onclick="editPost(${post.id})">Editar</button>
+                            <button class="btn btn-danger" onclick="deletePost(${post.id})">Deletar</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderCategories() {
+            const list = document.getElementById('categoriesList');
+            list.innerHTML = categories.map(cat => `
+                <div style="background: #f9fafb; padding: 1.5rem; border-radius: 0.5rem; border-left: 4px solid var(--primary);">
+                    <h3>${cat}</h3>
+                    <p style="color: var(--text-light); margin-top: 0.5rem; font-size: 0.9rem;">
+                        ${posts.filter(p => p.category === cat).length} artigos
+                    </p>
+                </div>
+            `).join('');
+        }
+
+        // FORM SUBMIT
+        document.getElementById('postForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const newPost = {
+                id: Math.max(...posts.map(p => p.id), 0) + 1,
+                title: document.getElementById('postTitle').value,
+                content: document.getElementById('postContent').value,
+                excerpt: document.getElementById('postExcerpt').value,
+                category: document.getElementById('postCategory').value,
+                icon: document.getElementById('postIcon').value,
+                readTime: parseInt(document.getElementById('postReadTime').value),
+                status: document.getElementById('postStatus').value,
+                date: new Date().toLocaleDateString('pt-BR')
+            };
+
+            posts.push(newPost);
+            localStorage.setItem('blogPosts', JSON.stringify(posts));
+            
+            alert('✅ Artigo publicado com sucesso!');
+            document.getElementById('postForm').reset();
+            updateDashboard();
+            switchSection('posts');
+        });
+
+        document.getElementById('categoryForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const catName = document.getElementById('categoryName').value.toLowerCase().replace(/\s+/g, '-');
+            if (!categories.includes(catName)) {
+                categories.push(catName);
+                alert('✅ Categoria criada!');
+                closeModal('addCategoryModal');
+                renderCategories();
+            } else {
+                alert('⚠️ Esta categoria já existe');
+            }
+        });
+
+        // MODAL
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function showAddCategoryModal() {
+            document.getElementById('addCategoryModal').classList.add('active');
+        }
+
+        function editPost(id) {
+            const post = posts.find(p => p.id === id);
+            if (!post) return;
+
+            document.getElementById('editPostId').value = id;
+            document.getElementById('editPostTitle').value = post.title;
+            document.getElementById('editPostContent').value = post.content;
+            document.getElementById('editPostCategory').value = post.category;
+            document.getElementById('editPostStatus').value = post.status;
+            document.getElementById('editPostModal').classList.add('active');
+        }
+
+        function deletePost(id) {
+            if (confirm('Tem certeza que deseja deletar este artigo?')) {
+                posts = posts.filter(p => p.id !== id);
+                localStorage.setItem('blogPosts', JSON.stringify(posts));
+                renderPostsTable();
+                updateDashboard();
+            }
+        }
+
+        document.getElementById('editPostForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('editPostId').value);
+            const post = posts.find(p => p.id === id);
+
+            post.title = document.getElementById('editPostTitle').value;
+            post.content = document.getElementById('editPostContent').value;
+            post.category = document.getElementById('editPostCategory').value;
+            post.status = document.getElementById('editPostStatus').value;
+
+            localStorage.setItem('blogPosts', JSON.stringify(posts));
+            alert('✅ Artigo atualizado!');
+            closeModal('editPostModal');
+            renderPostsTable();
+        });
+
+        // Click nos menu links
+        document.querySelectorAll('.menu-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchSection(link.dataset.section);
+            });
+        });
+
+        // INIT
+        updateDashboard();
+    </script>
+</body>
+</html>
